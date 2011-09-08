@@ -130,7 +130,19 @@ union {
 
 }
 
+// talaj
 
+plane {
+    y, -10
+    texture {
+        pigment {
+            color rgb <0, 0.2, 0>
+        }
+    }
+}
+
+
+// kochka
 union {
 	//Block(6,<0,0,0>,1)
 	Block(4,<0,0,0>,1)
@@ -138,5 +150,7 @@ union {
             //White_Marble
             T_Wood34
         }
+        translate 0.37*(x-z)
 }
+
 
