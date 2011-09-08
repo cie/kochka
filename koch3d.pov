@@ -1,3 +1,6 @@
+#declare Radio=true;
+
+
 global_settings {
     charset            ascii
     adc_bailout        1/255
@@ -9,24 +12,43 @@ global_settings {
     max_intersections  64
     number_of_waves    10
     noise_generator    2
+    ambient_light      0
 
-    radiosity {
-        adc_bailout      0.01
-        always_sample    on
-        brightness       1.0
-        count            35  // (max = 1600)
-        error_bound      1.8
-        gray_threshold   0.0
-        low_error_factor 0.5
-        max_sample       30
-        minimum_reuse    0.015
-        nearest_count    5  // (max = 20)
-        normal           off
-        pretrace_start   0.08
-        pretrace_end     0.04
-        recursion_limit  3
-     }
+    #if(Radio)
+        radiosity {
+            adc_bailout      0.01
+            always_sample    on
+            brightness       2.0
+            count            35  // (max = 1600)
+            error_bound      1.8
+            gray_threshold   0.4//0.0
+            low_error_factor 0.5
+            max_sample       30
+            minimum_reuse    0.015
+            nearest_count    10  // (max = 20)
+            normal           off
+            pretrace_start   0.08
+            pretrace_end     0.004
+            recursion_limit  10
+        }
+     #end
 }
+
+sky_sphere {
+    pigment {
+        gradient y
+        color_map {
+            [0 rgb 0]
+            [1 rgb <0.1, 0.2, 0.3>*0.05]
+        }
+        scale 2
+        translate -1
+    }
+}
+
+#include "textures.inc"
+#include "colors.inc"
+#include "woods.inc"
 
 #declare LLength=1.5;
 #declare LPath=
@@ -40,7 +62,7 @@ spline {
 	2, <100,100,-150>
 }
 
-#declare zoom=0.15;
+#declare zoom=0.143;
 camera {
     orthographic
     location  <0.0, 0.0 ,-10.0>
@@ -50,8 +72,8 @@ camera {
 	look_at 0
     sky <0.0, 1.0, 0.0>
 	translate -1.9*x
-    rotate 45*x
-    rotate 45*y
+    rotate 33*x
+    rotate 55*y
 }
 
 light_source {
@@ -75,18 +97,46 @@ light_source {
 	#end
 #end
 
+//box {
+//	<-6,-1.500,-3>, <3, -3, 6>
+
+//table
 union {
-	Block(6,<0,0,0>,1)
-	pigment { color rgb <1,0.9,0.8> }
+    //tabletop
+    union {
+        cylinder {
+            <0, 1, 0>, <0, -1, 0>, 3
+            scale 0.2*y
+        }
+        torus {
+            3, 0.2
+        }
+
+        scale 1.618*x
+        translate -1.5*y-0.2*y
+    }
+    // leg
+    cylinder {
+        <0, -1.5-0.2*2, 0>, <0,-10, 0>, 1.3
+    }
+    texture {
+        T_Wood11
+        rotate 90*z
+        rotate -92*y
+    }
+
+    translate -1.5 * x
+    rotate 45*y
+
 }
 
-plane {
-	y, -1.500
-	pigment {bumps
-		color_map {
-			[0.0 rgb <1,0.3,0.1>]
-			[0.99 rgb <1,1,0.3>]
-		}
-	}
+
+union {
+	//Block(6,<0,0,0>,1)
+	Block(4,<0,0,0>,1)
+	texture {
+            //White_Marble
+            T_Wood34
+        }
 }
 
