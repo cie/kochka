@@ -34,12 +34,13 @@ global_settings {
      #end
 }
 
+#declare Blue = rgb<0.1, 0.23, 0.3>;
 sky_sphere {
     pigment {
         gradient y
         color_map {
-            [0 rgb 0]
-            [1 rgb <0.1, 0.2, 0.3>*0.05]
+            [0 Blue*0.02]
+            [1 Blue*0.05]
         }
         scale 2
         translate -1
@@ -62,18 +63,20 @@ spline {
 	2, <100,100,-150>
 }
 
-#declare zoom=0.143;
+#declare zoom=0.158;
+
+//#declare zoom=0.11;
 camera {
     orthographic
     location  <0.0, 0.0 ,-10.0>
-    direction z 
     right image_width/image_height*x/zoom
     up y/zoom
-	look_at 0
+    look_at <0,-1.5,0>
     sky <0.0, 1.0, 0.0>
-	translate -1.9*x
-    rotate 33*x
-    rotate 55*y
+    translate -1.5*x
+    rotate 28*x
+    rotate 57*y
+    translate 1.2*y
 }
 
 light_source {
@@ -114,15 +117,23 @@ union {
 
         scale 1.618*x
         translate -1.5*y-0.2*y
-    }
+        texture {
+            T_Wood11
+            rotate 90*z
+            rotate -92*y
+        }
+    }////*/
     // leg
-    cylinder {
-        <0, -1.5-0.2*2, 0>, <0,-10, 0>, 1.3
-    }
-    texture {
-        T_Wood11
-        rotate 90*z
-        rotate -92*y
+    object {
+        cylinder {
+            <0, -1.5-0.2*2, 0>, <0,-10, 0>, 1.3
+        }
+        texture {
+            T_Wood11
+            rotate 92*x
+            translate -1.5 * x
+            rotate 45*y
+        }
     }
 
     translate -1.5 * x
@@ -130,27 +141,28 @@ union {
 
 }
 
-// talaj
+// floor
 
 plane {
-    y, -10
+    y, -4
     texture {
         pigment {
-            color rgb <0, 0.2, 0>
+            checker Blue*0.0, Blue*0.02
+            scale 1.5
         }
     }
-}
+}//*/
 
 
 // kochka
 union {
 	//Block(6,<0,0,0>,1)
-	Block(4,<0,0,0>,1)
+	Block(6,<0,0,0>,1)
 	texture {
             //White_Marble
             T_Wood34
         }
-        translate 0.37*(x-z)
+        translate 1.5/4*(x-z)
 }
 
 
